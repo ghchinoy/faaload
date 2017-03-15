@@ -7,15 +7,18 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 )
 
 var (
-	baseapi  string
-	airports []string
-	max      int
+	baseapi         string
+	airports        []string
+	max             int
+	defaultairports = []string{"JFK", "ORD", "MDW", "LGA", "LAX", "LGB", "SEA", "ROC", "DEN", "COS", "DAL", "HOU"}
 )
 
+// check for env variables
 func init() {
 
 	if os.Getenv("FAA_API") != "" {
@@ -33,6 +36,12 @@ func init() {
 	} else {
 		max = 50
 	}
+
+	if os.Getenv("FAA_IATA") != "" {
+		airports = strings.Split(os.Getenv("FAA_IATA"), ",")
+	} else {
+		airports = defaultairports
+	}
 }
 
 func main() {
@@ -41,7 +50,6 @@ func main() {
 	r := rand.New(s)
 
 	api := baseapi + "/%s"
-	airports := []string{"JFK", "ORD", "MDW", "LGA", "LAX", "LGB", "SEA", "ROC", "DEN", "COS", "DAL", "HOU"}
 	times := r.Intn(max)
 
 	fmt.Println(times)
