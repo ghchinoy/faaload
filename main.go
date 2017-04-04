@@ -78,6 +78,7 @@ func getAirport(url string) int {
 	res, err := client.Do(req)
 	if err != nil {
 		fmt.Println("error", err.Error())
+		return -1
 	}
 	return res.StatusCode
 }
